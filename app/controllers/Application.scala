@@ -8,6 +8,7 @@ import ca.ellanVannin.dynatrace.data._
 import ca.ellanVannin.dynatrace.shared.Loggable
 import com.dynatrace.diagnostics.core.realtime.export.BtExport
 import com.dynatrace.diagnostics.core.realtime.export.BtExport.BusinessTransaction.Type
+import com.google.protobuf.GeneratedMessage
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSClient
 import play.api.mvc._
@@ -46,8 +47,8 @@ class Application @Inject()(ws: WSClient) extends Controller with Loggable {
   }
 
   def getJsonFromProtobufObject(btExport: BtExport.BusinessTransactions): JsValue = {
-    val serverName = Option(btExport.getServerName)
-    val lostTransactions = Option(btExport.getLostTransactions)
+    val serverName = getOptionalValue(btExport.hasServerName)(btExport.getServerName)
+    val lostTransactions = getOptionalValue(btExport.hasLostTransactions)(btExport.getLostTransactions)
     val bt = btExport.getBusinessTransactionsList.map(convertBusinessTransaction)
 
     val btCaseClass = BusinessTransactions(bt, lostTransactions, serverName)
@@ -56,72 +57,74 @@ class Application @Inject()(ws: WSClient) extends Controller with Loggable {
 
   private def convertBusinessTransaction(bt: BtExport.BusinessTransaction): BusinessTransaction = {
     val name = bt.getName
-    val `type` = Option {
-      bt.getType match {
-        case Type.PUREPATH => PUREPATH
-        case Type.USER_ACTION => USER_ACTION
-        case Type.VISIT => VISIT
+    val `type` = getOptionalValue(bt.hasType){
+        bt.getType match {
+          case Type.PUREPATH => PUREPATH
+          case Type.USER_ACTION => USER_ACTION
+          case Type.VISIT => VISIT
+        }
       }
-    }
 
-    val application = Option(bt.getApplication)
+    val application = getOptionalValue(bt.hasApplication)(bt.getApplication)
     val measureNames = bt.getMeasureNamesList.toIndexedSeq
     val dimensionNames = bt.getDimensionNamesList.toIndexedSeq
     val occurences = bt.getOccurrencesList.map(convertBtOccurence)
-    val systemProfile = Option(bt.getSystemProfile)
+    val systemProfile = getOptionalValue(bt.hasSystemProfile)(bt.getSystemProfile)
 
     BusinessTransaction(name, `type`, application, measureNames, dimensionNames, occurences, systemProfile)
   }
 
   private def convertBtOccurence(btOccurrence: BtExport.BtOccurrence): BtOccurence = {
     val startTime = btOccurrence.getStartTime
-    val endTime = Option(btOccurrence.getEndTime)
-    val purePathId = Option(btOccurrence.getPurePathId)
+    val endTime = getOptionalValue(btOccurrence.hasEndTime)(btOccurrence.getEndTime)
+    val purePathId = getOptionalValue(btOccurrence.hasPurePathId)(btOccurrence.getPurePathId)
+
     val values: Seq[Double] = btOccurrence.getValuesList.foldLeft(List[Double]()) {
       (seq, entry) => entry :: seq
     }
     val dimensions = btOccurrence.getDimensionsList.toIndexedSeq
-    val actionName = Option(btOccurrence.getActionName)
-    val url = Option(btOccurrence.getUrl)
-    val query = Option(btOccurrence.getQuery)
-    val visitId = Option(btOccurrence.getVisitId)
-    val user = Option(btOccurrence.getUser)
-    val apdex = Option(btOccurrence.getApdex)
-    val converted = Option(btOccurrence.getConverted)
-    val responseTime = Option(btOccurrence.getResponseTime)
-    val cpuTime = Option(btOccurrence.getCpuTime)
-    val syncTime = Option(btOccurrence.getSyncTime)
-    val waitTime = Option(btOccurrence.getWaitTime)
-    val suspensionTime = Option(btOccurrence.getSuspensionTime)
-    val execTime = Option(btOccurrence.getExecTime)
-    val duration = Option(btOccurrence.getDuration)
-    val failed = Option(btOccurrence.getFailed)
+    val actionName = getOptionalValue(btOccurrence.hasActionName)(btOccurrence.getActionName)
+    val url = getOptionalValue(btOccurrence.hasUrl)(btOccurrence.getUrl)
+    val query = getOptionalValue(btOccurrence.hasQuery)(btOccurrence.getQuery)
 
-    val nrOfActions = Option(btOccurrence.getNrOfActions)
-    val clientFamily = Option(btOccurrence.getClientFamily)
-    val clientIP = Option(btOccurrence.getClientIP)
-    val continent = Option(btOccurrence.getContinent)
-    val country = Option(btOccurrence.getCountry)
-    val city = Option(btOccurrence.getCity)
-    val failedAction = Option(btOccurrence.getFailedActions)
-    val clientErrors = Option(btOccurrence.getClientErrors)
-    val exitActionFailed = Option(btOccurrence.getExitActionFailed)
-    val bounce = Option(btOccurrence.getBounce)
-    val osFamily = Option(btOccurrence.getOsFamily)
-    val osName = Option(btOccurrence.getOsName)
-    val connectionType = Option(btOccurrence.getConnectionType)
+    val visitId = getOptionalValue(btOccurrence.hasVisitId)(btOccurrence.getVisitId)
+    val user = getOptionalValue(btOccurrence.hasUser)(btOccurrence.getUser)
+    val apdex = getOptionalValue(btOccurrence.hasApdex)(btOccurrence.getApdex)
+    val converted = getOptionalValue(btOccurrence.hasConverted)(btOccurrence.getConverted)
+    val responseTime = getOptionalValue(btOccurrence.hasResponseTime)(btOccurrence.getResponseTime)
+    val cpuTime = getOptionalValue(btOccurrence.hasCpuTime)(btOccurrence.getCpuTime)
+    val syncTime = getOptionalValue(btOccurrence.hasSyncTime)(btOccurrence.getSyncTime)
+    val waitTime = getOptionalValue(btOccurrence.hasWaitTime)(btOccurrence.getWaitTime)
+    val suspensionTime = getOptionalValue(btOccurrence.hasSuspensionTime)(btOccurrence.getSuspensionTime)
+    val execTime = getOptionalValue(btOccurrence.hasExecTime)(btOccurrence.getExecTime)
+    val duration = getOptionalValue(btOccurrence.hasDuration)(btOccurrence.getDuration)
+    val failed = getOptionalValue(btOccurrence.hasFailed)(btOccurrence.getFailed)
+
+    val nrOfActions = getOptionalValue(btOccurrence.hasNrOfActions)(btOccurrence.getNrOfActions)
+    val clientFamily = getOptionalValue(btOccurrence.hasClientFamily)(btOccurrence.getClientFamily)
+    val clientIP = getOptionalValue(btOccurrence.hasClientIP)(btOccurrence.getClientIP)
+    val continent = getOptionalValue(btOccurrence.hasContinent)(btOccurrence.getContinent)
+    val country = getOptionalValue(btOccurrence.hasCountry)(btOccurrence.getCountry)
+    val city = getOptionalValue(btOccurrence.hasCity)(btOccurrence.getCity)
+    val failedAction = getOptionalValue(btOccurrence.hasFailedActions)(btOccurrence.getFailedActions)
+    val clientErrors = getOptionalValue(btOccurrence.hasClientErrors)(btOccurrence.getClientErrors)
+    val exitActionFailed = getOptionalValue(btOccurrence.hasExitActionFailed)(btOccurrence.getExitActionFailed)
+    val bounce = getOptionalValue(btOccurrence.hasBounce)(btOccurrence.getBounce)
+    val osFamily = getOptionalValue(btOccurrence.hasOsFamily)(btOccurrence.getOsFamily)
+    val osName = getOptionalValue(btOccurrence.hasOsName)(btOccurrence.getOsName)
+    val connectionType = getOptionalValue(btOccurrence.hasConnectionType)(btOccurrence.getConnectionType)
     val convertedBy = btOccurrence.getConvertedByList.toIndexedSeq
 
-    val clientTime = Option(btOccurrence.getClientTime)
-    val networkTime = Option(btOccurrence.getNetworkTime)
-    val serverTime = Option(btOccurrence.getServerTime)
-    val urlRedirectionTime = Option(btOccurrence.getUrlRedirectionTime)
-    val dnsTime = Option(btOccurrence.getDnsTime)
-    val connectTime = Option(btOccurrence.getConnectTime)
-    val sslTime = Option(btOccurrence.getSslTime)
-    val documentRequestTime = Option(btOccurrence.getDocumentRequestTime)
-    val documentResponseTime = Option(btOccurrence.getDocumentResponseTime)
-    val processingTime = Option(btOccurrence.getProcessingTime)
+    val clientTime = getOptionalValue(btOccurrence.hasClientTime)(btOccurrence.getClientTime)
+    val networkTime = getOptionalValue(btOccurrence.hasNetworkTime)(btOccurrence.getNetworkTime)
+    val serverTime = getOptionalValue(btOccurrence.hasServerTime)(btOccurrence.getServerTime)
+    val urlRedirectionTime = getOptionalValue(btOccurrence.hasUrlRedirectionTime)(btOccurrence.getUrlRedirectionTime)
+    val dnsTime = getOptionalValue(btOccurrence.hasDnsTime)(btOccurrence.getDnsTime)
+    val connectTime = getOptionalValue(btOccurrence.hasConnectTime)(btOccurrence.getConnectTime)
+    val sslTime = getOptionalValue(btOccurrence.hasSslTime)(btOccurrence.getSslTime)
+    val documentRequestTime = getOptionalValue(btOccurrence.hasDocumentRequestTime)(btOccurrence.getDocumentRequestTime)
+    val documentResponseTime = getOptionalValue(btOccurrence.hasDocumentResponseTime)(btOccurrence.getDocumentResponseTime)
+    val processingTime = getOptionalValue(btOccurrence.hasProcessingTime)(btOccurrence.getProcessingTime)
 
     BtOccurence(startTime,
       endTime,
@@ -169,6 +172,13 @@ class Application @Inject()(ws: WSClient) extends Controller with Loggable {
       documentRequestTime,
       documentResponseTime,
       processingTime)
+  }
+
+  private def getOptionalValue[V](notNullChecker: Boolean)(getter: => V): Option[V] = {
+    if (notNullChecker)
+      Option(getter)
+    else
+      None
   }
 
   def getJsonFromCaseClasses(caseClass: BusinessTransactions): JsValue = {
