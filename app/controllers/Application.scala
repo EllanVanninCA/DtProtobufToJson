@@ -8,7 +8,6 @@ import ca.ellanVannin.dynatrace.data._
 import ca.ellanVannin.dynatrace.shared.Loggable
 import com.dynatrace.diagnostics.core.realtime.export.BtExport
 import com.dynatrace.diagnostics.core.realtime.export.BtExport.BusinessTransaction.Type
-import com.google.protobuf.GeneratedMessage
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSClient
 import play.api.mvc._
