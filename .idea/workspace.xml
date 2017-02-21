@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4624343c-7664-4d7b-be0f-8dcb53c5a386" name="Default" comment="Various changes:&#10;- Changed the Writes used for J&#10;- Untracked 'workspace.xml'">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/Application.scala" afterPath="$PROJECT_DIR$/app/controllers/Application.scala" />
+    <list default="true" id="4624343c-7664-4d7b-be0f-8dcb53c5a386" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/ca/ellanVannin/dynatrace/data/BusinessTransaction.scala" afterPath="$PROJECT_DIR$/app/ca/ellanVannin/dynatrace/data/BusinessTransaction.scala" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/project/project/target/" />
@@ -67,8 +67,8 @@
       <file leaf-file-name="BusinessTransaction.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/ca/ellanVannin/dynatrace/data/BusinessTransaction.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="36" column="50" lean-forward="true" selection-start-line="36" selection-start-column="50" selection-end-line="36" selection-end-column="50" />
+            <state relative-caret-position="414">
+              <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1334,7 +1334,7 @@
       <workItem from="1487559497507" duration="2706000" />
       <workItem from="1487590338930" duration="602000" />
       <workItem from="1487594747847" duration="3245000" />
-      <workItem from="1487688380927" duration="4626000" />
+      <workItem from="1487688380927" duration="6259000" />
     </task>
     <task id="LOCAL-00001" summary="Took in account optional values">
       <created>1487596241815</created>
@@ -1343,11 +1343,18 @@
       <option name="project" value="LOCAL" />
       <updated>1487596241815</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Untracked 'workspace.xml'">
+      <created>1487693397256</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1487693397256</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60017000" />
+    <option name="totallyTimeSpent" value="61650000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="736" extended-state="6" />
@@ -1396,7 +1403,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added project files" />
     <MESSAGE value="Took in account optional values" />
-    <option name="LAST_COMMIT_MESSAGE" value="Took in account optional values" />
+    <MESSAGE value="Untracked 'workspace.xml'" />
+    <option name="LAST_COMMIT_MESSAGE" value="Untracked 'workspace.xml'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2215,8 +2223,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/ca/ellanVannin/dynatrace/data/BusinessTransaction.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="36" column="50" lean-forward="true" selection-start-line="36" selection-start-column="50" selection-end-line="36" selection-end-column="50" />
+        <state relative-caret-position="414">
+          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding />
         </state>
       </provider>
