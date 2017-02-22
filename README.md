@@ -1,7 +1,7 @@
 # DtProtobufToJson
 
 ## Installation
-In order to install the application, please download the latest version of the package (currently located [here](https://github.com/EllanVanninCA/DtProtobufToJson/blob/master/dist/universal/dtprotobuftojson-0.1.zip)).
+In order to install the application, please download the latest version of the package (currently located [here](https://github.com/EllanVanninCA/DtProtobufToJson/blob/master/dist/universal/dtprotobuftojson.zip)).
 
 This package is a ZIP file that you can extract. Once extracted, there should be a subfolder called `bin` that contains various scripts to launch the app. Just make sure the appropriate script is executable and launch it.
 
